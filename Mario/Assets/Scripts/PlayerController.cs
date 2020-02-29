@@ -5,8 +5,8 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     private RectTransform player;
-    private int playerX, playerY; // プレイヤのX座標,Y座標 左下が(0,0)
-    private int groundY;
+    private int playerX, playerY; // プレイヤーのX座標,Y座標 左下が(0,0)
+    private int groundY; // プレイヤーの高さを考慮した地面の座標設定
 
     // Start is called before the first frame update
     void Start()
