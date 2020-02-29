@@ -6,6 +6,7 @@ public class PlayerController : MonoBehaviour
 {
     private RectTransform player;
     private int playerX, playerY; // プレイヤのX座標,Y座標 左下が(0,0)
+    private int groundY;
 
     // Start is called before the first frame update
     void Start()
@@ -13,6 +14,7 @@ public class PlayerController : MonoBehaviour
         player = GetComponent<RectTransform>();
         playerX = 300;
         playerY = 300;
+        groundY = Mathf.FloorToInt(GetComponent<RectTransform>().sizeDelta.y)/2;
     }
 
     // Update is called once per frame
@@ -25,13 +27,13 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
-            if(player.position.y > 0)
+            if(player.position.y > groundY)
             {
                 playerX += 2;
                 playerY += -2;
-                if (playerY <= 0)
+                if (playerY <= groundY)
                 {
-                    playerY = 0;
+                    playerY = groundY;
                 }
             }
         }
