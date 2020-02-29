@@ -6,7 +6,8 @@ public class PlayerController : MonoBehaviour
 {
     private RectTransform player;
     private int playerX, playerY; // プレイヤーのX座標,Y座標 左下が(0,0)
-    private int groundY; // プレイヤーの高さを考慮した地面の座標設定
+    private int playerDy; // プレイヤーのY座標加速度
+    private int groundY; // プレイヤーの高さを考慮した地面の座標設定 
 
     // Start is called before the first frame update
     void Start()
@@ -14,6 +15,7 @@ public class PlayerController : MonoBehaviour
         player = GetComponent<RectTransform>();
         playerX = 300;
         playerY = 300;
+        playerDy = 0;
         groundY = Mathf.FloorToInt(GetComponent<RectTransform>().sizeDelta.y)/2;
     }
 
@@ -23,23 +25,25 @@ public class PlayerController : MonoBehaviour
         
         if (Input.GetKey(KeyCode.Space))
         {
-            playerX += 3;
+            playerDy = 30;
+            playerY += playerDy;
         }
         else
         {
             if(player.position.y > groundY)
             {
-                playerX += 2;
-                playerY += -2;
+                playerDy += -1;
+                playerY += playerDy;
                 if (playerY <= groundY)
                 {
                     playerY = groundY;
+                    playerDy = 0;
                 }
             }
         }
 
         this.transform.position = new Vector3(playerX, playerY, 0);
 
-        Debug.Log(player.position.y);
+        Debug.Log(playerDy);
     }
 }
