@@ -4,21 +4,68 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    private RectTransform player;
+    private int playerX, playerY; // プレイヤーのX座標,Y座標 左下が(0,0)
+    private int playerDy; // プレイヤーのY座標加速度
+    private int groundY; // プレイヤーの高さを考慮した地面の座標設定 
+
     // Start is called before the first frame update
     void Start()
     {
-        
+        player = GetComponent<RectTransform>();
+        playerX = 300;
+        playerY = 300;
+        playerDy = 0;
+        groundY = Mathf.FloorToInt(GetComponent<RectTransform>().sizeDelta.y)/2;
     }
 
     // Update is called once per frame
     void Update()
     {
-        
-        this.transform.position += new Vector3(0, -2, 0);
+        PlayerJump();
+        PlayerMove();
+
+        this.transform.position = new Vector3(playerX, playerY, 0);
+
+        Debug.Log(playerDy);
+    }
+
+    // プレイヤーのジャンプを操る関数
+    public void PlayerJump()
+    {
         if (Input.GetKey(KeyCode.Space))
         {
-            this.transform.position += new Vector3(0, 3, 0);
+            playerDy = 30;
+            playerY += playerDy;
         }
-
+        else
+        {
+            if (player.position.y > groundY)
+            {
+                playerDy += -1;
+                playerY += playerDy;
+                if (playerY <= groundY)
+                {
+                    playerY = groundY;
+                    playerDy = 0;
+                }
+            }
+        }
     }
+
+    public void PlayerMove()
+    {
+        if (Input.GetKey(KeyCode.A))
+        {
+            playerX += -15;
+        }else if (Input.GetKey(KeyCode.D))
+        {
+            playerX += 15;
+        }
+        else
+        {
+            playerX += 0;
+        }
+    }
+
 }
