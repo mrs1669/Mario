@@ -23,6 +23,7 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         PlayerJump();
+        PlayerMove();
 
         this.transform.position = new Vector3(playerX, playerY, 0);
 
@@ -49,6 +50,21 @@ public class PlayerController : MonoBehaviour
                     playerDy = 0;
                 }
             }
+        }
+    }
+
+    public void PlayerMove()
+    {
+        if (Input.GetKey(KeyCode.A))
+        {
+            playerX += -15;
+        }else if (Input.GetKey(KeyCode.D))
+        {
+            playerX += 15;
+        }
+        else
+        {
+            playerX += 0;
         }
     }
 
