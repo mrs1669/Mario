@@ -22,7 +22,16 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        PlayerJump();
+
+        this.transform.position = new Vector3(playerX, playerY, 0);
+
+        Debug.Log(playerDy);
+    }
+
+    // プレイヤーのジャンプを操る関数
+    public void PlayerJump()
+    {
         if (Input.GetKey(KeyCode.Space))
         {
             playerDy = 30;
@@ -30,7 +39,7 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
-            if(player.position.y > groundY)
+            if (player.position.y > groundY)
             {
                 playerDy += -1;
                 playerY += playerDy;
@@ -41,9 +50,6 @@ public class PlayerController : MonoBehaviour
                 }
             }
         }
-
-        this.transform.position = new Vector3(playerX, playerY, 0);
-
-        Debug.Log(playerDy);
     }
+
 }
