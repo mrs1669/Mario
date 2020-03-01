@@ -8,7 +8,9 @@ public class PlayerController : MonoBehaviour
     private int playerX, playerY; // プレイヤーのX座標,Y座標 左下が(0,0)
     private int playerDy; // プレイヤーのY座標加速度
     private int playerWidth, playerHeight;
-    private int groundY; // プレイヤーの高さを考慮した地面の座標設定 
+    private int groundY; // プレイヤーの高さを考慮した地面の座標設定
+    private int jumpFlag = 0;
+    public AudioSource marioJumpSound;
 
     // Start is called before the first frame update
     void Start()
@@ -17,6 +19,7 @@ public class PlayerController : MonoBehaviour
         playerX = 300;
         playerY = 300;
         playerDy = 0;
+
         playerHeight = Mathf.FloorToInt(GetComponent<RectTransform>().sizeDelta.y);
         playerWidth = Mathf.FloorToInt(GetComponent<RectTransform>().sizeDelta.x);
         groundY = playerHeight / 2;
@@ -25,7 +28,8 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        PlayerJump();
+        jumpFlag = PlayerJump(jumpFlag);
+        //PlayerJump(jumpFlag);
         PlayerMove();
 
         this.transform.position = new Vector3(playerX, playerY, 0);
@@ -34,12 +38,14 @@ public class PlayerController : MonoBehaviour
     }
 
     // プレイヤーのジャンプを操る関数
-    public void PlayerJump()
+    public int PlayerJump(int jumpFlag)
     {
-        if (Input.GetKey(KeyCode.Space))
+        if (Input.GetKey(KeyCode.Space) && jumpFlag == 0)
         {
             playerDy = 30;
             playerY += playerDy;
+            jumpFlag = 1;
+            marioJumpSound.Play();
         }
         else
         {
@@ -51,9 +57,11 @@ public class PlayerController : MonoBehaviour
                 {
                     playerY = groundY;
                     playerDy = 0;
+                    jumpFlag = 0;
                 }
             }
         }
+        return jumpFlag;
     }
 
     public void PlayerMove()
@@ -71,7 +79,14 @@ public class PlayerController : MonoBehaviour
             playerX += 0;
         }
 
-        // しゃがみ機能
+        Crouching();
+        
+
+    }
+
+    // しゃがみ機能関数
+    public void Crouching()
+    {
         if (Input.GetKey(KeyCode.S))
         {
             GetComponent<RectTransform>().sizeDelta = new Vector2(playerWidth, playerHeight / 2);
@@ -86,7 +101,6 @@ public class PlayerController : MonoBehaviour
                 playerY = groundY;
             }
         }
-
     }
 
 }
